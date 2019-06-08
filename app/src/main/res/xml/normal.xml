@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!---
+
+// Para agregar una pequeña sobra debajo de la tecla
+
+<item android:left="2dp" android:right="2dp">
+
+        <shape android:shape="rectangle">
+
+            <solid android:color="@color/keyboard_divider"/>
+
+        </shape>
+
+  </item>
+
+-->
+
+
+<layer-list
+
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item>
+
+        <shape android:shape="rectangle">
+
+            <solid android:color="@color/colorGray"/>
+
+        </shape>
+
+    </item>
+
+
+</layer-list>

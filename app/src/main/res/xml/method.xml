@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <input-method
+
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <subtype android:imeSubtypeMode="keyboard" />
+    <subtype
+        android:label="Español (MX)"
+        android:imeSubtypeLocale="es"
+        android:imeSubtypeMode="keyboard"
+        android:imeSubtypeExtraValue="AsciiCapable"
+    />
 
 </input-method>

@@ -25,6 +25,7 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
         keyboard = new Keyboard(this, R.xml.keys_layout);
         keyboardView.setKeyboard(keyboard);
+        keyboardView.setPreviewEnabled(false);
         keyboardView.setOnKeyboardActionListener(this);
         return keyboardView;
     }
@@ -46,7 +47,7 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        playSound(primaryCode);
+        playClick(primaryCode);
         InputConnection inputConnection = getCurrentInputConnection();
         if (inputConnection != null) {
             switch(primaryCode) {
@@ -108,19 +109,16 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
 
     }
 
-    private void playSound(int keyCode){
-        Log.i("Sempiternal", "Valor: "+keyCode);
-        //v.vibrate(20);
+    private void playClick(int i){
 
-        audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
-        switch(keyCode){
+        switch(i){
             case 32:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR);
                 break;
 
             case Keyboard.KEYCODE_DONE:
-                break;
 
             case 10:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN);
@@ -132,7 +130,8 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
 
             default:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
-                break;
         }
+
     }
+
 }

@@ -1,16 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <Keyboard
 
     xmlns:android="http://schemas.android.com/apk/res/android"
+
     android:keyWidth="10%p"
-    android:horizontalGap="0px"
-    android:verticalGap="0px"
-    android:keyHeight="50dp"
-    android:keyTextColor="@color/colorGreen"
-    android:keyBackground="@color/colorBlack">
+    android:keyHeight="60dp"
+
+    android:horizontalGap="0dp"
+    android:verticalGap="0dp"
+
+    >
 
     <Row>
-        <Key android:keyLabel="1" android:codes="49" android:keyEdgeFlags="left"/>
+        <Key android:keyLabel="1" android:codes="49" android:keyEdgeFlags="left" />
         <Key android:keyLabel="2" android:codes="50"/>
         <Key android:keyLabel="3" android:codes="51"/>
         <Key android:keyLabel="4" android:codes="52"/>
@@ -45,11 +48,11 @@
         <Key android:keyLabel="j" android:codes="106"/>
         <Key android:keyLabel="k" android:codes="107"/>
         <Key android:keyLabel="l" android:codes="108"/>
-        <Key android:keyLabel="ñ" android:codes="110" android:keyEdgeFlags="right" />
+        <Key android:keyLabel="ñ" android:codes="164" android:keyEdgeFlags="right" />
     </Row>
 
     <Row>
-        <Key android:keyLabel="CAPS" android:codes="-1" android:keyWidth="15%p" android:keyEdgeFlags="left"/>
+        <Key android:codes="-1" android:keyWidth="15%p" android:keyEdgeFlags="left" android:keyIcon="@drawable/icon_shift"/>
         <Key android:keyLabel="z" android:codes="122"/>
         <Key android:keyLabel="x" android:codes="120"/>
         <Key android:keyLabel="c" android:codes="99"/>
