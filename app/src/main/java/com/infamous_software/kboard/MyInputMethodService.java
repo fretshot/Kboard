@@ -4,11 +4,12 @@ import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
-import android.os.Vibrator;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
+
 
 public class MyInputMethodService extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
@@ -17,7 +18,6 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
 
     private boolean caps = false;
 
-    private Vibrator v;
     private AudioManager audioManager;
 
     @Override
@@ -46,10 +46,11 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        //playSound(primaryCode);
+        playSound(primaryCode);
         InputConnection inputConnection = getCurrentInputConnection();
         if (inputConnection != null) {
             switch(primaryCode) {
+
                 case Keyboard.KEYCODE_DELETE :
                     CharSequence selectedText = inputConnection.getSelectedText(0);
 
@@ -58,22 +59,25 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
                     } else {
                         inputConnection.commitText("", 1);
                     }
+                    break;
+
                 case Keyboard.KEYCODE_SHIFT:
                     caps = !caps;
                     keyboard.setShifted(caps);
                     keyboardView.invalidateAllKeys();
                     break;
+
                 case Keyboard.KEYCODE_DONE:
                     inputConnection.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER));
-
                     break;
+
                 default :
                     char code = (char) primaryCode;
                     if(Character.isLetter(code) && caps){
                         code  = Character.toUpperCase(code);
                     }
                     inputConnection.commitText(String.valueOf(code), 1);
-
+                    break;
             }
         }
 
@@ -105,21 +109,30 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
     }
 
     private void playSound(int keyCode){
-
+        Log.i("Sempiternal", "Valor: "+keyCode);
         //v.vibrate(20);
+
         audioManager = (AudioManager)getSystemService(AUDIO_SERVICE);
+
         switch(keyCode){
             case 32:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR);
                 break;
+
             case Keyboard.KEYCODE_DONE:
+                break;
+
             case 10:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN);
                 break;
+
             case Keyboard.KEYCODE_DELETE:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_DELETE);
                 break;
-            default: audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
+
+            default:
+                audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
+                break;
         }
     }
 }
