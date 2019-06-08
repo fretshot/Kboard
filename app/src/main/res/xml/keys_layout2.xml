@@ -65,7 +65,7 @@
 
     <Row android:rowEdgeFlags="bottom">
         <Key android:codes="-6" android:keyWidth="20%p" android:keyEdgeFlags="left" android:keyIcon="@drawable/icon_alt"/>
-        <Key android:keyLabel="," android:codes="44"/>
+        <Key android:codes="-2" android:keyIcon="@drawable/icon_settings" />
         <Key android:keyLabel="Infamous Software" android:codes="32"  android:keyWidth="60%p" android:isRepeatable="true"/>
         <Key android:keyLabel="." android:codes="46"/>
         <Key android:codes="-4" android:keyWidth="20%p" android:keyEdgeFlags="right" android:keyIcon="@drawable/icon_enter"/>

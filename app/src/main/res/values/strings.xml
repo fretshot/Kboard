@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Kboard</string>
+
+    <string name="number_row">Number row</string>
+    <string name="key_preview">Key preview</string>
+    <string name="key_vibration">Keypress vibration</string>
+    <string name="key_sound">Keypress sound</string>
+    <string name="type_test">Type to test here</string>
+    <string name="about">About</string>
+    <string name="test_here">Test here</string>
 </resources>

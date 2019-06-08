@@ -1,5 +1,6 @@
 package com.infamous_software.kboard;
 
+import android.content.Intent;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
@@ -72,6 +73,12 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
                     keyboardView.invalidateAllKeys();keyboardView.invalidateAllKeys();
 
+                    break;
+
+                case Keyboard.KEYCODE_MODE_CHANGE:
+                    Intent dialogIntent = new Intent(this, SettingsActivity.class);
+                    dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(dialogIntent);
                     break;
 
                 case Keyboard.KEYCODE_DELETE :
