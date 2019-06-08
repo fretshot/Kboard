@@ -8,4 +8,4 @@ I decided to make a custom Android keyboard app
 ![pic1](https://i.imgur.com/Mg8TT6Xl.jpg)
 
 ### v2.0
-![pic2](https://i.imgur.com/V9Z17H7.jpg)
+![pic2](https://i.imgur.com/V9Z17H7l.jpg)
