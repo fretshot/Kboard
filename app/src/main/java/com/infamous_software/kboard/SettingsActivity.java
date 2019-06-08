@@ -1,24 +1,62 @@
 package com.infamous_software.kboard;
 
+import android.app.AlertDialog;
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.EditText;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.skydoves.colorpickerpreference.ColorEnvelope;
+import com.skydoves.colorpickerpreference.ColorListener;
+import com.skydoves.colorpickerpreference.ColorPickerDialog;
+
 public class SettingsActivity extends AppCompatActivity {
+
+    private Button button;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        button = findViewById(R.id.btn1);
+
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showColorPicker();
+            }
+        });
+    }
+
+
+    public void showColorPicker(){
+        ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        builder.setTitle("ColorPicker Dialog");
+        builder.setPreferenceName("MyColorPickerDialog");
+        builder.setPositiveButton("Confirmar", new ColorListener() {
+            @Override
+            public void onColorSelected(ColorEnvelope colorEnvelope) {
+
+            }
+        });
+        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
     }
 
     @Override

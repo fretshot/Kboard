@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
-    android:scrollbars = "vertical"
+    android:scrollbars="vertical"
     android:scrollbarStyle="insideInset">
 
     <RelativeLayout
@@ -90,6 +90,15 @@
             android:layout_marginTop="180dp"
             android:background="?android:attr/listDivider" />
 
+        <Button
+            android:id="@+id/btn1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"
+            android:text="Color Picker"
+            android:layout_marginTop="300dp"/>
+
         <TextView
             android:id="@+id/text_show_battery"
             android:layout_width="wrap_content"
@@ -114,6 +123,7 @@
             android:layout_height="1dp"
             android:layout_marginTop="240dp"
             android:background="?android:attr/listDivider" />
+        
 
 
 
