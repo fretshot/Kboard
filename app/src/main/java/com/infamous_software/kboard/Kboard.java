@@ -5,13 +5,12 @@ import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
 
 
-public class MyInputMethodService extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
+public class Kboard extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
     private KeyboardView keyboardView;
     private Keyboard keyboard;
@@ -30,7 +29,7 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
         return keyboardView;
     }
 
-    public MyInputMethodService() {
+    public Kboard() {
         super();
     }
 
@@ -111,7 +110,7 @@ public class MyInputMethodService extends InputMethodService implements Keyboard
 
     private void playClick(int i){
 
-        AudioManager audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
 
         switch(i){
             case 32:

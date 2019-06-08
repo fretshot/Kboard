@@ -6,8 +6,9 @@ android {
         applicationId "com.infamous_software.kboard"
         minSdkVersion 19
         targetSdkVersion 28
-        versionCode 1
-        versionName "1.0"
+        versionCode 2
+        versionName "2.0"
+        ndk.abiFilters 'armeabi-v7a','arm64-v8a','x86','x86_64'
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
