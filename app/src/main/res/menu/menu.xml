@@ -8,14 +8,14 @@
     <item
         android:id="@+id/type"
         android:icon="@drawable/icon_type"
-        android:title="@string/type_test"
+        android:title="@string/test_here"
         app:actionViewClass="androidx.appcompat.widget.SearchView"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
+
 
     <item android:id="@+id/about"
         android:title="@string/about"
-        app:showAsAction="never"
-        />
+        app:showAsAction="never" />
 
 
 </menu>

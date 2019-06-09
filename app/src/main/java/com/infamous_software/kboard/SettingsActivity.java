@@ -5,7 +5,10 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
 import androidx.core.view.MenuItemCompat;
@@ -25,11 +28,9 @@ import com.skydoves.colorpickerview.ColorEnvelope;
 import com.skydoves.colorpickerview.ColorPickerDialog;
 import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
 
-
 public class SettingsActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
-
 
     Button buttonNormalKeyColor;
     Button buttonPressedKeyColor;
@@ -52,6 +53,12 @@ public class SettingsActivity extends AppCompatActivity {
     String normalKeyColor;
     String pressedKeyColor;
     String fontKeyColor;
+
+    MenuItem menuItem;
+    SearchView searchView;
+    SearchManager searchManager;
+    SearchableInfo searchableInfo;
+    ImageView searchMagIcon;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -76,17 +83,19 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences.Editor mEditor = sharedPreferences.edit();
                 mEditor.putBoolean("switchNumberRow", isChecked).apply();
+                searchView.setIconified(true);
             }
         });
 
         stateSwitchKeyPreview = sharedPreferences.getBoolean("switchKeyPreview",false);
         switchKeyPreview = findViewById(R.id.switch_key_preview);
-        switchKeyPreview.setChecked(stateSwitchNumberRow);
+        switchKeyPreview.setChecked(stateSwitchKeyPreview);
         switchKeyPreview.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences.Editor mEditor = sharedPreferences.edit();
                 mEditor.putBoolean("switchKeyPreview", isChecked).apply();
+                searchView.setIconified(true);
             }
         });
 
@@ -98,6 +107,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences.Editor mEditor = sharedPreferences.edit();
                 mEditor.putBoolean("switchKeypressVibration", isChecked).apply();
+                searchView.setIconified(true);
             }
         });
 
@@ -109,6 +119,7 @@ public class SettingsActivity extends AppCompatActivity {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 SharedPreferences.Editor mEditor = sharedPreferences.edit();
                 mEditor.putBoolean("switchKeypressSound", isChecked).apply();
+                searchView.setIconified(true);
             }
         });
 
@@ -134,11 +145,16 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
+    private void restartService() {
+        stopService(new Intent(this, Kboard.class));
+        startService(new Intent(this, Kboard.class));
+    }
+
     public void pickNormalKeyColor() {
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         builder.setTitle("ColorPicker Dialog")
                 .setPreferenceName("MyColorPickerDialog")
-                .setPositiveButton("Confirm", new ColorEnvelopeListener() {
+                .setPositiveButton(R.string.confirm, new ColorEnvelopeListener() {
                     @Override
                     public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
                         normalKeyColor = "#"+envelope.getHexCode();
@@ -146,7 +162,7 @@ public class SettingsActivity extends AppCompatActivity {
                         imageViewNormalKeyColor.setBackgroundColor(Color.parseColor(normalKeyColor));
                     }
                 });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -161,7 +177,7 @@ public class SettingsActivity extends AppCompatActivity {
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         builder.setTitle("Pick a pressed key color font")
                 .setPreferenceName("color_pressed_key")
-                .setPositiveButton("Confirm", new ColorEnvelopeListener() {
+                .setPositiveButton(R.string.confirm, new ColorEnvelopeListener() {
                     @Override
                     public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
                         pressedKeyColor = "#"+envelope.getHexCode();
@@ -169,7 +185,7 @@ public class SettingsActivity extends AppCompatActivity {
                         imageViewPressedKeyColor.setBackgroundColor(Color.parseColor(pressedKeyColor));
                     }
                 });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -185,7 +201,7 @@ public class SettingsActivity extends AppCompatActivity {
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
         builder.setTitle("Pick color font")
                 .setPreferenceName("color_font")
-                .setPositiveButton("Confirm", new ColorEnvelopeListener() {
+                .setPositiveButton(R.string.confirm, new ColorEnvelopeListener() {
                     @Override
                     public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
                         fontKeyColor = "#"+envelope.getHexCode();
@@ -193,7 +209,7 @@ public class SettingsActivity extends AppCompatActivity {
                         imageViewFontKeyColor.setBackgroundColor(Color.parseColor(fontKeyColor));
                     }
                 });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -205,25 +221,22 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
 
-
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
 
-        MenuItem searchMenuItem = menu.findItem(R.id.type);
-        SearchView searchViewAction = (SearchView) MenuItemCompat.getActionView(searchMenuItem);
+        menuItem = menu.findItem(R.id.type);
+        searchView = (SearchView) MenuItemCompat.getActionView(menuItem);
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchableInfo searchableInfo = searchManager.getSearchableInfo(getComponentName());
+        searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchableInfo = searchManager.getSearchableInfo(getComponentName());
 
-        searchViewAction.setSearchableInfo(searchableInfo);
-        searchViewAction.setIconifiedByDefault(true);
+        searchView.setSearchableInfo(searchableInfo);
+        searchView.setIconifiedByDefault(true);
 
-        //String suggestWord = "Sempiternal";
-        //searchViewAction.setQuery(suggestWord, false);
-        searchViewAction.setQueryHint("Test here");
-        searchViewAction.clearFocus();
+        searchView.setQueryHint(getString(R.string.test_here));
+        searchView.clearFocus();
 
-        ImageView searchMagIcon = searchViewAction.findViewById(R.id.search_button);
+        searchMagIcon = searchView.findViewById(R.id.search_button);
         searchMagIcon.setImageResource(R.drawable.icon_type);
 
         return super.onPrepareOptionsMenu(menu);
@@ -241,9 +254,14 @@ public class SettingsActivity extends AppCompatActivity {
 
         int id = item.getItemId();
 
-
         if (id == R.id.about) {
-            Toast.makeText(this, "v2.2", Toast.LENGTH_LONG).show();
+            try {
+                PackageInfo pInfo = this.getPackageManager().getPackageInfo(getPackageName(), 0);
+                String version = pInfo.versionName;
+                Toast.makeText(this, getString(R.string.app_version)+version, Toast.LENGTH_LONG).show();
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
             return true;
         }
 
@@ -263,5 +281,10 @@ public class SettingsActivity extends AppCompatActivity {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
     }
 }

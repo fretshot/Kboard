@@ -15,6 +15,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
 
 
@@ -26,8 +27,10 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
     boolean caps = false;
     boolean kb2 = false;
-    boolean keyPreview;
-    boolean vibrate;
+    boolean isPreviewEnabled;
+    boolean isVibratorEnabled;
+    boolean isSoundEnabled;
+
     AudioManager audioManager;
     SharedPreferences sharedPreferences;
     Vibrator vibrator;
@@ -41,8 +44,11 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
         vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
-        keyPreview = sharedPreferences.getBoolean("switchNumberRow",false);
-        vibrate = sharedPreferences.getBoolean("switchKeypressVibration",false);
+        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
+
+        isPreviewEnabled = sharedPreferences.getBoolean("switchKeyPreview",false);
+        isVibratorEnabled = sharedPreferences.getBoolean("switchKeypressVibration",false);
+        isSoundEnabled = sharedPreferences.getBoolean("switchKeypressSound",false);
 
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
 
@@ -51,13 +57,18 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
         keyboardView.setKeyboard(keyboard1);
 
-        keyboardView.setPreviewEnabled(keyPreview);
+        keyboardView.setPreviewEnabled(isPreviewEnabled);
         keyboardView.setOnKeyboardActionListener(this);
         return keyboardView;
     }
 
     public Kboard() {
         super();
+    }
+
+    public void onStartInputView(EditorInfo info, boolean restarting){
+        setInputView(onCreateInputView());
+        //Log.i("sempiternal", "Start Input View");
     }
 
 
@@ -73,9 +84,12 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        playClick(primaryCode);
 
-        if(vibrate){
+        if(isSoundEnabled){
+            playClick(primaryCode);
+        }
+
+        if(isVibratorEnabled){
             vibrar();
         }
 
@@ -172,14 +186,13 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
     private void playClick(int i){
 
-        audioManager = (AudioManager) getSystemService(AUDIO_SERVICE);
-
         switch(i){
             case 32:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_SPACEBAR);
                 break;
 
             case Keyboard.KEYCODE_DONE:
+                break;
 
             case 10:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_RETURN);
@@ -191,6 +204,7 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
             default:
                 audioManager.playSoundEffect(AudioManager.FX_KEYPRESS_STANDARD);
+                break;
         }
 
     }

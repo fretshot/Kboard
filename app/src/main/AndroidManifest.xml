@@ -11,11 +11,15 @@
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
+
         tools:ignore="GoogleAppIndexingWarning">
 
-        <activity android:name=".SettingsActivity" />
+        <activity
+            android:name=".SettingsActivity"
+        />
 
         <service
+
             android:name=".Kboard"
             android:label="Kboard"
             android:permission="android.permission.BIND_INPUT_METHOD">
