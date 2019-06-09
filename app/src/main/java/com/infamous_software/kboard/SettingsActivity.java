@@ -30,6 +30,7 @@ public class SettingsActivity extends AppCompatActivity {
 
     SharedPreferences sharedPreferences;
 
+
     Button buttonNormalKeyColor;
     Button buttonPressedKeyColor;
     Button buttonFontKeyColor;

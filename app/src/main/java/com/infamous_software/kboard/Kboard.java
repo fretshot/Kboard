@@ -1,11 +1,15 @@
 package com.infamous_software.kboard;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
+import android.os.Build;
+import android.os.VibrationEffect;
+import android.os.Vibrator;
 import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -19,11 +23,14 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
     KeyboardView keyboardView;
     Keyboard keyboard1;
     Keyboard keyboard2;
+
     boolean caps = false;
     boolean kb2 = false;
     boolean keyPreview;
+    boolean vibrate;
     AudioManager audioManager;
     SharedPreferences sharedPreferences;
+    Vibrator vibrator;
 
     @Override
     public View onCreateInputView() {
@@ -32,7 +39,10 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
         sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
+        vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+
         keyPreview = sharedPreferences.getBoolean("switchNumberRow",false);
+        vibrate = sharedPreferences.getBoolean("switchKeypressVibration",false);
 
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
 
@@ -64,6 +74,11 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
         playClick(primaryCode);
+
+        if(vibrate){
+            vibrar();
+        }
+
         InputConnection inputConnection = getCurrentInputConnection();
         if (inputConnection != null) {
             switch(primaryCode) {
@@ -118,6 +133,17 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
             }
         }
 
+    }
+
+    private void vibrar() {
+        if(vibrator.hasVibrator()) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                vibrator.vibrate(VibrationEffect.createOneShot(20, VibrationEffect.DEFAULT_AMPLITUDE));
+            } else {
+                //deprecated in API 26
+                vibrator.vibrate(20);
+            }
+        }
     }
 
     @Override
