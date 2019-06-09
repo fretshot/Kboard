@@ -12,8 +12,16 @@
     <color name="colorGreen">#00FF00</color>
     <color name="colorSkyBlue">#87ceeb</color>
     <color name="colorBlack">#000000</color>
-    <color name="colorWhite">#ffffff </color>
+    <color name="colorWhite">#ffffff</color>
     <color name="colorGraySoft">#101010</color>
-    <color name="colorGray">#212121 </color>
+    <color name="colorGray">#212121</color>
+
+    <color name="colorKeyNormal">#212121</color>
+    <color name="colorKeyPressed">#101010</color>
+    <color name="colorKeyFont">#00FF00</color>
+    <color name="colorKeyboardBackground">#000000</color>
+
+
+
 
 </resources>

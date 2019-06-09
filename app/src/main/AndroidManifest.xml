@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
-        <activity android:name=".SettingsActivity"></activity>
+        <activity android:name=".SettingsFragment"></activity>
+        <activity android:name=".SettingsActivity" />
 
         <service
             android:name=".Kboard"

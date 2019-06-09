@@ -5,6 +5,9 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,7 +16,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import com.skydoves.colorpickerpreference.ColorEnvelope;
@@ -22,35 +27,125 @@ import com.skydoves.colorpickerpreference.ColorPickerDialog;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    private Button button;
+    SharedPreferences sharedPreferences;
+
+    Button buttonNormalKeyColor;
+    Button buttonPressedKeyColor;
+    Button buttonFontKeyColor;
+
+    Switch switchNumberRow;
+    Switch switchKeyPreview;
+    Switch switchKeypressVibration;
+    Switch switchKeypressSound;
+
+    ImageView imageViewNormalKeyColor;
+    ImageView imageViewPressedKeyColor;
+    ImageView imageViewFontKeyColor;
+
+    boolean stateSwitchNumberRow;
+    boolean stateSwitchKeyPreview;
+    boolean stateSwitchKeypressVibration;
+    boolean stateSwitchKeypressSound;
+
+    String normalKeyColor;
+    String pressedKeyColor;
+    String fontKeyColor;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
-        button = findViewById(R.id.btn1);
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
 
-        button.setOnClickListener(new View.OnClickListener() {
+        buttonNormalKeyColor = findViewById(R.id.buttonNormalKeyColor);
+        buttonPressedKeyColor = findViewById(R.id.buttonPressedKeyColor);
+        buttonFontKeyColor = findViewById(R.id.buttonFontKeyColor);
+
+        imageViewNormalKeyColor = findViewById(R.id.img_normal_key_color);
+        imageViewPressedKeyColor = findViewById(R.id.img_pressed_key_color);
+        imageViewFontKeyColor = findViewById(R.id.img_font_key_color);
+
+        stateSwitchNumberRow = sharedPreferences.getBoolean("switchNumberRow",false);
+        switchNumberRow = findViewById(R.id.switch_number_row);
+        switchNumberRow.setChecked(stateSwitchNumberRow);
+        switchNumberRow.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor mEditor = sharedPreferences.edit();
+                mEditor.putBoolean("switchNumberRow", isChecked).apply();
+            }
+        });
+
+        stateSwitchKeyPreview = sharedPreferences.getBoolean("switchKeyPreview",false);
+        switchKeyPreview = findViewById(R.id.switch_key_preview);
+        switchKeyPreview.setChecked(stateSwitchNumberRow);
+        switchKeyPreview.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor mEditor = sharedPreferences.edit();
+                mEditor.putBoolean("switchKeyPreview", isChecked).apply();
+            }
+        });
+
+        stateSwitchKeypressVibration = sharedPreferences.getBoolean("switchKeypressVibration",false);
+        switchKeypressVibration = findViewById(R.id.switch_keypress_vibration);
+        switchKeypressVibration.setChecked(stateSwitchKeypressVibration);
+        switchKeypressVibration.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor mEditor = sharedPreferences.edit();
+                mEditor.putBoolean("switchKeypressVibration", isChecked).apply();
+            }
+        });
+
+        stateSwitchKeypressSound = sharedPreferences.getBoolean("switchKeypressSound",false);
+        switchKeypressSound = findViewById(R.id.switch_keypress_sound);
+        switchKeypressSound.setChecked(stateSwitchKeypressSound);
+        switchKeypressSound.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                SharedPreferences.Editor mEditor = sharedPreferences.edit();
+                mEditor.putBoolean("switchKeypressSound", isChecked).apply();
+            }
+        });
+
+        buttonNormalKeyColor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showColorPicker();
+                pickNormalKeyColor();
+            }
+        });
+
+        buttonPressedKeyColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickPressedKeyColor();
+            }
+        });
+
+        buttonFontKeyColor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                pickFontKeyColor();
             }
         });
     }
 
 
-    public void showColorPicker(){
+    public void pickFontKeyColor(){
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-        builder.setTitle("ColorPicker Dialog");
-        builder.setPreferenceName("MyColorPickerDialog");
-        builder.setPositiveButton("Confirmar", new ColorListener() {
+        builder.setTitle("Pick color font");
+        builder.setPreferenceName("color_font");
+        builder.setPositiveButton("Confirm", new ColorListener() {
             @Override
             public void onColorSelected(ColorEnvelope colorEnvelope) {
-
+                fontKeyColor = "#"+colorEnvelope.getColorHtml();
+                Toast.makeText(getApplicationContext(), fontKeyColor, Toast.LENGTH_LONG).show();
+                imageViewFontKeyColor.setBackgroundColor(Color.parseColor(fontKeyColor));
             }
         });
-        builder.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
@@ -58,6 +153,50 @@ public class SettingsActivity extends AppCompatActivity {
         });
         builder.show();
     }
+
+    public void pickPressedKeyColor(){
+        ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        builder.setTitle("Pick a pressed key color font");
+        builder.setPreferenceName("color_pressed_key");
+        builder.setPositiveButton("Confirm", new ColorListener() {
+            @Override
+            public void onColorSelected(ColorEnvelope colorEnvelope) {
+                pressedKeyColor = "#"+colorEnvelope.getColorHtml();
+                Toast.makeText(getApplicationContext(), pressedKeyColor, Toast.LENGTH_LONG).show();
+                imageViewPressedKeyColor.setBackgroundColor(Color.parseColor(pressedKeyColor));
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+    public void pickNormalKeyColor(){
+        ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
+        builder.setTitle("Pick a normal key color font");
+        builder.setPreferenceName("color_normal_key");
+        builder.setPositiveButton("Confirm", new ColorListener() {
+            @Override
+            public void onColorSelected(ColorEnvelope colorEnvelope) {
+                normalKeyColor = "#"+colorEnvelope.getColorHtml();
+                Toast.makeText(getApplicationContext(), normalKeyColor, Toast.LENGTH_LONG).show();
+                imageViewNormalKeyColor.setBackgroundColor(Color.parseColor(normalKeyColor));
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        builder.show();
+    }
+
+
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

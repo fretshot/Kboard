@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true"
     android:scrollbars="vertical"
     android:scrollbarStyle="insideInset">
 
     <RelativeLayout
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         tools:context=".activity_main">
 
         <TextView
-            android:id="@+id/text_show_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -25,7 +24,7 @@
             android:textSize="16sp"/>
 
         <Switch
-            android:id="@+id/switch_show_date"
+            android:id="@+id/switch_number_row"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -33,14 +32,12 @@
             android:layout_marginEnd="20dp" />
 
         <View
-            android:id="@+id/divider1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="60dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
-            android:id="@+id/text_show_seconds"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -50,7 +47,7 @@
             android:textSize="16sp"/>
 
         <Switch
-            android:id="@+id/switch_show_seconds"
+            android:id="@+id/switch_key_preview"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -58,14 +55,12 @@
             android:layout_marginEnd="20dp" />
 
         <View
-            android:id="@+id/divider2"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="120dp"
             android:background="?android:attr/listDivider" />
 
         <TextView
-            android:id="@+id/text_show_24h"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -74,9 +69,8 @@
             android:textColor="@color/textColor"
             android:textSize="16sp"/>
 
-
         <Switch
-            android:id="@+id/switch_show_24h"
+            android:id="@+id/switch_keypress_vibration"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -84,23 +78,13 @@
             android:layout_marginEnd="20dp" />
 
         <View
-            android:id="@+id/divider3"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="180dp"
             android:background="?android:attr/listDivider" />
 
-        <Button
-            android:id="@+id/btn1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true"
-            android:text="Color Picker"
-            android:layout_marginTop="300dp"/>
 
         <TextView
-            android:id="@+id/text_show_battery"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="20dp"
@@ -110,7 +94,7 @@
             android:textSize="16sp"/>
 
         <Switch
-            android:id="@+id/switch_show_battery"
+            android:id="@+id/switch_keypress_sound"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
@@ -118,18 +102,82 @@
             android:layout_marginEnd="20dp" />
 
         <View
-            android:id="@+id/divider4"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_marginTop="240dp"
             android:background="?android:attr/listDivider" />
-        
 
+        <Button
+            android:id="@+id/buttonNormalKeyColor"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/color_key_normal"
+            android:layout_marginTop="245dp"
+            android:layout_marginStart="15dp"/>
 
+        <ImageView
+            android:id="@+id/img_normal_key_color"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="245dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/colorKeyNormal"
+            />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="300dp"
+            android:background="?android:attr/listDivider" />
 
+        <Button
+            android:id="@+id/buttonPressedKeyColor"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/color_key_pressed"
+            android:layout_marginTop="305dp"
+            android:layout_marginStart="15dp"/>
 
+        <ImageView
+            android:id="@+id/img_pressed_key_color"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="305dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/colorKeyPressed"
+            />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="360dp"
+            android:background="?android:attr/listDivider" />
+
+        <Button
+            android:id="@+id/buttonFontKeyColor"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="@string/color_key_font"
+            android:layout_marginTop="365dp"
+            android:layout_marginStart="15dp"/>
+
+        <ImageView
+            android:id="@+id/img_font_key_color"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="365dp"
+            android:layout_marginEnd="20dp"
+            android:background="@color/colorKeyFont"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginTop="420dp"
+            android:background="?android:attr/listDivider" />
 
 
 

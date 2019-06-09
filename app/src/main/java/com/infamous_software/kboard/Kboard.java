@@ -1,10 +1,12 @@
 package com.infamous_software.kboard;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.inputmethodservice.InputMethodService;
 import android.inputmethodservice.Keyboard;
 import android.inputmethodservice.KeyboardView;
 import android.media.AudioManager;
+import android.preference.PreferenceManager;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -14,17 +16,23 @@ import android.view.inputmethod.InputConnection;
 
 public class Kboard extends InputMethodService implements KeyboardView.OnKeyboardActionListener {
 
-    private KeyboardView keyboardView;
-    private Keyboard keyboard1;
-    private Keyboard keyboard2;
-
-    private boolean caps = false;
-    private boolean kb2 = false;
-
-    private AudioManager audioManager;
+    KeyboardView keyboardView;
+    Keyboard keyboard1;
+    Keyboard keyboard2;
+    boolean caps = false;
+    boolean kb2 = false;
+    boolean keyPreview;
+    AudioManager audioManager;
+    SharedPreferences sharedPreferences;
 
     @Override
     public View onCreateInputView() {
+
+        // On create se llama cada vez que seleccionas el metodo de entrada
+
+        sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this.getApplicationContext());
+
+        keyPreview = sharedPreferences.getBoolean("switchNumberRow",false);
 
         keyboardView = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard_view, null);
 
@@ -33,7 +41,7 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
         keyboardView.setKeyboard(keyboard1);
 
-        keyboardView.setPreviewEnabled(false);
+        keyboardView.setPreviewEnabled(keyPreview);
         keyboardView.setOnKeyboardActionListener(this);
         return keyboardView;
     }
@@ -45,17 +53,16 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
     @Override
     public void onPress(int primaryCode) {
-
+        // Cuando precionas cualquier tecla
     }
 
     @Override
     public void onRelease(int primaryCode) {
-
+        // Cuando dejas de precionar cualquier tecla
     }
 
     @Override
     public void onKey(int primaryCode, int[] keyCodes) {
-        Log.i("sempiternal", "Código: "+ primaryCode);
         playClick(primaryCode);
         InputConnection inputConnection = getCurrentInputConnection();
         if (inputConnection != null) {
@@ -115,7 +122,6 @@ public class Kboard extends InputMethodService implements KeyboardView.OnKeyboar
 
     @Override
     public void onText(CharSequence text) {
-
     }
 
     @Override

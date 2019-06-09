@@ -5,7 +5,12 @@
     <string name="key_preview">Key preview</string>
     <string name="key_vibration">Keypress vibration</string>
     <string name="key_sound">Keypress sound</string>
-    <string name="type_test">Type to test here</string>
+    <string name="type_test">Test your kb here...</string>
+
+    <string name="color_key_normal">Normal Key color</string>
+    <string name="color_key_pressed">Pressed key color</string>
+    <string name="color_key_font">Font key color</string>
+
     <string name="about">About</string>
     <string name="test_here">Test here</string>
 </resources>
