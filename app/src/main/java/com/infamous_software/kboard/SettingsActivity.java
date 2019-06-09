@@ -8,10 +8,10 @@ import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.preference.PreferenceManager;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.AppCompatActivity;
+import androidx.core.view.MenuItemCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
+import androidx.appcompat.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -21,9 +21,10 @@ import android.widget.ImageView;
 import android.widget.Switch;
 import android.widget.Toast;
 
-import com.skydoves.colorpickerpreference.ColorEnvelope;
-import com.skydoves.colorpickerpreference.ColorListener;
-import com.skydoves.colorpickerpreference.ColorPickerDialog;
+import com.skydoves.colorpickerview.ColorEnvelope;
+import com.skydoves.colorpickerview.ColorPickerDialog;
+import com.skydoves.colorpickerview.listeners.ColorEnvelopeListener;
+
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -132,67 +133,73 @@ public class SettingsActivity extends AppCompatActivity {
         });
     }
 
-
-    public void pickFontKeyColor(){
+    public void pickNormalKeyColor() {
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-        builder.setTitle("Pick color font");
-        builder.setPreferenceName("color_font");
-        builder.setPositiveButton("Confirm", new ColorListener() {
-            @Override
-            public void onColorSelected(ColorEnvelope colorEnvelope) {
-                fontKeyColor = "#"+colorEnvelope.getColorHtml();
-                Toast.makeText(getApplicationContext(), fontKeyColor, Toast.LENGTH_LONG).show();
-                imageViewFontKeyColor.setBackgroundColor(Color.parseColor(fontKeyColor));
-            }
-        });
+        builder.setTitle("ColorPicker Dialog")
+                .setPreferenceName("MyColorPickerDialog")
+                .setPositiveButton("Confirm", new ColorEnvelopeListener() {
+                    @Override
+                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
+                        normalKeyColor = "#"+envelope.getHexCode();
+                        //Toast.makeText(getApplicationContext(), normalKeyColor, Toast.LENGTH_LONG).show();
+                        imageViewNormalKeyColor.setBackgroundColor(Color.parseColor(normalKeyColor));
+                    }
+                });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
+        builder.attachAlphaSlideBar(false);
+        builder.attachBrightnessSlideBar(true);
         builder.show();
     }
 
     public void pickPressedKeyColor(){
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-        builder.setTitle("Pick a pressed key color font");
-        builder.setPreferenceName("color_pressed_key");
-        builder.setPositiveButton("Confirm", new ColorListener() {
-            @Override
-            public void onColorSelected(ColorEnvelope colorEnvelope) {
-                pressedKeyColor = "#"+colorEnvelope.getColorHtml();
-                Toast.makeText(getApplicationContext(), pressedKeyColor, Toast.LENGTH_LONG).show();
-                imageViewPressedKeyColor.setBackgroundColor(Color.parseColor(pressedKeyColor));
-            }
-        });
+        builder.setTitle("Pick a pressed key color font")
+                .setPreferenceName("color_pressed_key")
+                .setPositiveButton("Confirm", new ColorEnvelopeListener() {
+                    @Override
+                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
+                        pressedKeyColor = "#"+envelope.getHexCode();
+                        //Toast.makeText(getApplicationContext(), pressedKeyColor, Toast.LENGTH_LONG).show();
+                        imageViewPressedKeyColor.setBackgroundColor(Color.parseColor(pressedKeyColor));
+                    }
+                });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
+        builder.attachAlphaSlideBar(false);
+        builder.attachBrightnessSlideBar(true);
         builder.show();
     }
 
-    public void pickNormalKeyColor(){
+
+    public void pickFontKeyColor(){
         ColorPickerDialog.Builder builder = new ColorPickerDialog.Builder(this, AlertDialog.THEME_DEVICE_DEFAULT_DARK);
-        builder.setTitle("Pick a normal key color font");
-        builder.setPreferenceName("color_normal_key");
-        builder.setPositiveButton("Confirm", new ColorListener() {
-            @Override
-            public void onColorSelected(ColorEnvelope colorEnvelope) {
-                normalKeyColor = "#"+colorEnvelope.getColorHtml();
-                Toast.makeText(getApplicationContext(), normalKeyColor, Toast.LENGTH_LONG).show();
-                imageViewNormalKeyColor.setBackgroundColor(Color.parseColor(normalKeyColor));
-            }
-        });
+        builder.setTitle("Pick color font")
+                .setPreferenceName("color_font")
+                .setPositiveButton("Confirm", new ColorEnvelopeListener() {
+                    @Override
+                    public void onColorSelected(ColorEnvelope envelope, boolean fromUser) {
+                        fontKeyColor = "#"+envelope.getHexCode();
+                        //Toast.makeText(getApplicationContext(), fontKeyColor, Toast.LENGTH_LONG).show();
+                        imageViewFontKeyColor.setBackgroundColor(Color.parseColor(fontKeyColor));
+                    }
+                });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dialogInterface.dismiss();
             }
         });
+        builder.attachAlphaSlideBar(false);
+        builder.attachBrightnessSlideBar(true);
         builder.show();
     }
 
@@ -215,7 +222,7 @@ public class SettingsActivity extends AppCompatActivity {
         searchViewAction.setQueryHint("Test here");
         searchViewAction.clearFocus();
 
-        ImageView searchMagIcon = searchViewAction.findViewById(android.support.v7.appcompat.R.id.search_button);
+        ImageView searchMagIcon = searchViewAction.findViewById(R.id.search_button);
         searchMagIcon.setImageResource(R.drawable.icon_type);
 
         return super.onPrepareOptionsMenu(menu);
